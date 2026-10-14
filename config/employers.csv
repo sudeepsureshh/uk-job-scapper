@@ -1,0 +1,51 @@
+employer_name,careers_url,ats_type,sponsorship_known,notes
+Barclays,https://jobs.barclays.com,workday,yes,Major UK bank; active Skilled Worker sponsor; strong Java/Spring roles
+HSBC,https://www.hsbc.com/careers,workday,yes,Global bank headquartered in UK; sponsor register confirmed; technology roles in London/Leeds
+Lloyds Banking Group,https://www.lloydsbankinggroup.com/careers,workday,yes,UK retail bank; sponsors for tech roles; Java/Spring Boot widely used
+NatWest Group,https://www.jobs.natwestgroup.com,workday,yes,UK bank; confirmed sponsor; engineering roles across UK
+JPMorgan Chase,https://careers.jpmorgan.com,workday,yes,US investment bank with large London tech hub; confirmed sponsor; Java-heavy stack
+Goldman Sachs,https://www.goldmansachs.com/careers,workday,yes,Investment bank; London office; confirmed sponsor; strong engineering culture
+Deutsche Bank,https://careers.db.com,successfactors,yes,German bank with major London tech hub; confirmed sponsor; Java used extensively
+Revolut,https://www.revolut.com/careers,greenhouse,yes,UK FinTech unicorn; confirmed sponsor; fast-growing engineering team
+Monzo,https://monzo.com/careers,greenhouse,yes,UK digital bank; confirmed sponsor; strong engineering values
+Starling Bank,https://www.starlingbank.com/careers,greenhouse,yes,UK challenger bank; confirmed sponsor; Java/Spring Boot backend
+Amazon,https://www.amazon.jobs/en/locations/london-gbr,workday,yes,FAANG; large London tech presence; confirmed sponsor; Java-heavy services
+Google,https://careers.google.com,workday,yes,FAANG; London and multiple UK offices; confirmed sponsor
+Microsoft,https://careers.microsoft.com,workday,yes,FAANG; large Reading and London offices; confirmed sponsor; Azure-focused
+Meta,https://www.metacareers.com,workday,yes,FAANG; London office; confirmed sponsor; strong backend engineering
+Apple,https://jobs.apple.com,workday,yes,FAANG; London office; confirmed sponsor
+IBM,https://www.ibm.com/employment/uk,workday,yes,Legacy tech giant; confirmed sponsor; consulting and engineering roles
+Accenture,https://www.accenture.com/gb-en/careers,workday,yes,Major consulting firm; confirmed sponsor; large UK workforce
+Capgemini,https://www.capgemini.com/gb-en/careers,successfactors,yes,French IT consulting firm; confirmed sponsor; major UK presence
+Infosys,https://www.infosys.com/careers,custom,yes,Indian IT firm with large UK presence; confirmed sponsor
+Tata Consultancy Services,https://www.tcs.com/careers,taleo,yes,TCS UK; confirmed sponsor; major IT services company
+Wipro,https://careers.wipro.com,custom,yes,Indian IT firm; confirmed sponsor; UK technology services
+ThoughtWorks,https://www.thoughtworks.com/careers,greenhouse,yes,Consultancy; confirmed sponsor; agile/XP methodology
+EPAM Systems,https://www.epam.com/careers,greenhouse,yes,Software engineering firm; confirmed sponsor; Java/Spring expertise
+Experian,https://www.experian.co.uk/careers,workday,yes,Data/credit analytics; confirmed sponsor; Nottingham and London offices
+Sage,https://www.sage.com/en-gb/company/careers,workday,yes,Accounting software; confirmed sponsor; Newcastle and London
+Auto Trader,https://careers.autotrader.co.uk,greenhouse,yes,UK automotive marketplace; confirmed sponsor; strong engineering team Manchester
+Booking.com,https://careers.booking.com,greenhouse,yes,Dutch travel tech; Amsterdam-headquartered but UK office; confirmed sponsor
+Deliveroo,https://careers.deliveroo.co.uk,greenhouse,yes,UK food delivery; confirmed sponsor; London-based engineering
+Ocado Technology,https://careers.ocado.com,greenhouse,yes,UK grocery tech; confirmed sponsor; heavy Java/distributed systems use
+Sky,https://careers.sky.com,workday,yes,UK media/tech company; confirmed sponsor; strong tech division
+BT Group,https://www.btplc.com/Careercentre,workday,yes,UK telecom; confirmed sponsor; technology and engineering roles
+BAE Systems,https://www.baesystems.com/en/careers,workday,yes,UK defence; confirmed sponsor for tech roles; security clearance may be needed
+GCHQ,https://www.gchq-careers.co.uk,custom,no,UK intelligence agency; does NOT sponsor visas; requires UK citizenship
+Vodafone,https://careers.vodafone.com,workday,yes,UK telecom; confirmed sponsor; technology and digital roles
+Oracle,https://www.oracle.com/uk/corporate/careers,taleo,yes,US tech giant; UK offices; confirmed sponsor; Java-heavy (Oracle is Java owner)
+SAP,https://jobs.sap.com,successfactors,yes,German ERP company; confirmed sponsor; UK offices in London and others
+Deloitte,https://jobs2.deloitte.com/uk/en,workday,yes,Big Four consulting; confirmed sponsor; technology consulting roles
+PwC,https://www.pwc.co.uk/careers,taleo,yes,Big Four consulting; confirmed sponsor; technology and digital roles
+KPMG,https://home.kpmg/uk/en/home/careers.html,workday,yes,Big Four consulting; confirmed sponsor; technology advisory roles
+EY,https://careers.ey.com/ey/jobs,workday,yes,Big Four consulting; confirmed sponsor; technology consulting
+Nationwide Building Society,https://www.nationwide.co.uk/careers,workday,yes,UK building society; confirmed sponsor; digital and technology roles
+Standard Chartered,https://www.sc.com/en/careers,workday,yes,UK-headquartered global bank; confirmed sponsor; strong Java tech stack
+Funding Circle,https://www.fundingcircle.com/uk/careers,greenhouse,yes,UK SME lending platform; confirmed sponsor; fintech engineering
+Wise,https://www.wise.jobs,greenhouse,yes,UK money transfer fintech; confirmed sponsor; strong engineering culture London
+OakNorth,https://www.oaknorth.co.uk/careers,greenhouse,unknown,UK digital bank; may sponsor; check job descriptions
+Atom Bank,https://www.atombank.co.uk/careers,greenhouse,unknown,UK digital bank; may sponsor; Durham-based
+Hargreaves Lansdown,https://www.hl.co.uk/about-us/careers,workday,unknown,UK investment platform; Bristol-based; check individual roles
+Rolls-Royce,https://careers.rolls-royce.com,workday,yes,UK engineering; confirmed sponsor; digital/software engineering roles
+ARM Holdings,https://careers.arm.com,workday,yes,UK chip designer; confirmed sponsor; Cambridge-based; software engineering
+Dyson,https://careers.dyson.com,workday,yes,UK tech/engineering company; confirmed sponsor; software engineering roles

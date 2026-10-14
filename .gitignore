@@ -1,0 +1,34 @@
+# Secrets and personal files
+*.env
+.env.local
+.env.*
+
+# Generated output (download from GitHub Actions artifacts instead)
+output/
+logs/
+
+# Job database and cached data (persisted via GitHub Actions cache)
+storage/jobs.db
+storage/sponsor_register_cache.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store

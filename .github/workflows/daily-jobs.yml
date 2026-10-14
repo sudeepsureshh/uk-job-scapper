@@ -1,0 +1,107 @@
+name: Daily UK Job Scraper
+
+# Schedule: 06:15 UTC (= 07:15 BST in summer, 06:15 GMT in winter).
+# Note: GitHub Actions cron runs in UTC. UK is UTC+1 (BST) in summer and UTC+0 (GMT) in winter.
+# This schedule targets approximately 07:15 local UK time year-round;
+# during GMT (Oct-Mar) the run is exactly on time; during BST (Mar-Oct) it is 1h early.
+# To adjust for BST specifically, change the cron to '15 5 * * *' (05:15 UTC = 06:15 BST).
+on:
+  schedule:
+    - cron: '15 6 * * *'  # 06:15 UTC daily
+  workflow_dispatch:
+    inputs:
+      new_only:
+        description: 'Only show new jobs discovered in this run'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      employer:
+        description: 'Limit to a specific employer (exact name from employers.csv, or leave blank)'
+        required: false
+        default: ''
+
+jobs:
+  scrape:
+    name: Scrape UK Jobs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # Restore the persistent job database from previous runs.
+      # The cache key includes the run ID so each run creates a fresh key.
+      # restore-keys uses a prefix match so the most recent previous key is restored.
+      - name: Restore job database cache
+        uses: actions/cache@v4
+        with:
+          path: storage/jobs.db
+          key: jobs-db-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            jobs-db-
+
+      - name: Create required directories
+        run: mkdir -p output logs storage
+
+      - name: Run job scraper
+        env:
+          REED_API_KEY: ${{ secrets.REED_API_KEY }}
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_API_KEY: ${{ secrets.ADZUNA_API_KEY }}
+        run: |
+          ARGS=""
+
+          if [ "${{ github.event.inputs.new_only }}" = "true" ]; then
+            ARGS="$ARGS --new-only"
+          fi
+
+          if [ -n "${{ github.event.inputs.employer }}" ]; then
+            ARGS="$ARGS --employer \"${{ github.event.inputs.employer }}\""
+          fi
+
+          echo "Running: python main.py run $ARGS"
+          python main.py run $ARGS
+
+      - name: Run test suite
+        run: python -m pytest tests/ -v --tb=short --no-header
+        # Tests run after the scrape so the run itself is not blocked by test failures.
+        # Change this step's position above the scrape step if you prefer fail-fast behaviour.
+
+      - name: Show run summary
+        run: python main.py status
+        if: always()  # Show even if scraper or tests failed
+
+      - name: Upload reports as GitHub Actions artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: job-reports-${{ github.run_id }}-${{ github.run_number }}
+          path: |
+            output/
+            logs/
+          retention-days: 30
+          # After 30 days the artifact is automatically deleted to save storage.
+          # Download the Excel report from the Actions tab in your GitHub repository.
+
+      - name: Export database snapshot as artifact
+        run: python -c "
+          from storage.database import JobDatabase
+          db = JobDatabase()
+          path = db.export_to_github_artifact('output')
+          print(f'Database exported to: {path}')
+          db.close()
+        "
+        if: always()

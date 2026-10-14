@@ -1,0 +1,226 @@
+candidate:
+  name: "Sudeep S"
+  contact:
+    email: "sudeep.s@example.com"  # Replace with actual email
+    phone: "+44 XXXX XXXXXX"       # Replace with actual phone
+    linkedin: "linkedin.com/in/sudeep-s"  # Replace with actual
+    github: "github.com/sudeep-s"         # Replace with actual
+    location: "Sheffield, UK"
+
+  visa_status:
+    requires_sponsorship: true
+    visa_type: "Skilled Worker Visa"
+    current_status: "Student Visa (Tier 4)"
+    eligible_for_graduate_route: true
+    notes: "Currently on UK Student Visa for MSc at University of Sheffield. Will require Skilled Worker visa sponsorship post-graduation."
+
+  education:
+    - institution: "University of Sheffield"
+      degree: "MSc Advanced Computer Science"
+      period: "Sep 2025 - Sep 2026"
+      predicted_grade: "Distinction"
+      relevant_modules:
+        - "Advanced Software Engineering"
+        - "Machine Learning"
+        - "Data Science"
+        - "Distributed Systems"
+        - "Cloud Computing"
+
+    - institution: "Loyola ICAM College of Engineering and Technology"
+      degree: "BEng Computer Science and Engineering"
+      period: "2018 - 2022"
+      grade: "First Class"
+      cgpa: "8.0/10"
+
+  work_experience:
+    - company: "Centrico"
+      role: "Java Developer"
+      period: "Aug 2022 - Aug 2025"
+      years: 3.0
+      domain: "Banking / Payments / Financial Technology"
+      technologies:
+        - Java
+        - Spring Boot
+        - Spring MVC
+        - REST APIs
+        - Microservices
+        - PostgreSQL
+        - Oracle
+        - Docker
+        - Kubernetes
+        - Jenkins
+        - CI/CD
+        - Maven
+        - Git
+        - Bitbucket
+      key_responsibilities:
+        - "Designed and developed RESTful microservices for banking and POS systems"
+        - "Implemented Spring Boot applications for payment processing pipelines"
+        - "Integrated with third-party banking APIs and payment gateways"
+        - "Optimised SQL queries and database performance in PostgreSQL and Oracle"
+        - "Deployed containerised applications using Docker and Kubernetes"
+        - "Built and maintained CI/CD pipelines using Jenkins"
+        - "Performed code reviews and maintained high code quality standards"
+        - "Collaborated in Agile/Scrum teams"
+
+    - company: "TakenMind Technologies"
+      role: "Java Developer Intern"
+      period: "Jun 2021 - Sep 2021"
+      years: 0.25
+      domain: "Software Development"
+      technologies:
+        - Java
+        - REST APIs
+        - Spring
+      key_responsibilities:
+        - "Developed REST API endpoints using Java and Spring framework"
+        - "Participated in backend development of web applications"
+
+  skills:
+    languages:
+      primary:
+        - Java
+        - Python
+      secondary:
+        - "C#"
+        - JavaScript
+        - Kotlin
+        - "C++"
+        - SQL
+
+    frameworks:
+      backend:
+        - "Spring Boot"
+        - "Spring MVC"
+        - "Spring Framework"
+        - Microservices
+        - "REST APIs"
+        - "RESTful Web Services"
+      frontend:
+        - React
+        - Angular
+      mobile:
+        - "Jetpack Compose"
+        - Android
+
+    databases:
+      - PostgreSQL
+      - Oracle
+      - MongoDB
+      - SQL
+
+    devops_cloud:
+      - Docker
+      - Kubernetes
+      - Jenkins
+      - AWS
+      - Azure
+      - "CI/CD"
+      - "Shell Scripting"
+      - Git
+      - Bitbucket
+      - Maven
+
+    testing:
+      - JUnit
+      - Mockito
+      - "Unit Testing"
+      - "Integration Testing"
+      - TDD
+
+    tools:
+      - Maven
+      - Git
+      - Docker
+      - Bitbucket
+      - "Shell Scripting"
+      - IntelliJ IDEA
+      - VS Code
+
+    soft_skills:
+      - "Agile/Scrum"
+      - "Code Review"
+      - "System Design"
+      - "API Design"
+      - "Problem Solving"
+
+  certifications:
+    - name: "Microsoft Azure Fundamentals (AZ-900)"
+      issuer: "Microsoft"
+      type: "Cloud"
+    - name: "Google Cloud Fundamentals"
+      issuer: "Google"
+      type: "Cloud"
+
+  projects:
+    - name: "eWaste Hub"
+      description: "Full-stack e-waste management platform with payment integration"
+      technologies:
+        - "Spring Boot"
+        - PostgreSQL
+        - React
+        - Stripe
+      type: "academic"
+
+    - name: "RecoLA"
+      description: "Android recommendation app built with Kotlin"
+      technologies:
+        - Kotlin
+        - "Jetpack Compose"
+        - Android
+      type: "academic"
+
+  measurable_achievements:
+    - "3+ years professional Java/Spring Boot experience at Centrico in banking/payments domain"
+    - "Led microservices development for POS and banking systems"
+    - "Developed REST APIs consumed by multiple downstream banking systems"
+    - "Deployed containerised microservices to Kubernetes clusters"
+    - "Predicted Distinction in MSc Advanced Computer Science at University of Sheffield"
+    - "First Class Honours in BEng Computer Science (CGPA 8.0/10)"
+    - "Dual cloud certifications: Azure AZ-900 and Google Cloud"
+
+primary_job_targets:
+  - "Java Developer"
+  - "Java Software Engineer"
+  - "Backend Java Developer"
+  - "Spring Boot Developer"
+  - "Backend Engineer"
+  - "Senior Java Developer"
+  - "Software Engineer Java"
+  - "Java Backend Engineer"
+  - "Microservices Developer"
+  - "Backend Software Engineer"
+
+secondary_job_targets:
+  - "Software Engineer"
+  - "Full Stack Java Developer"
+  - "API Developer"
+  - "Cloud Engineer"
+  - "DevOps Engineer"
+  - "Python Developer"
+  - "Graduate Software Engineer"
+  - "Associate Software Engineer"
+  - "FinTech Developer"
+  - "Payments Developer"
+  - "Data Engineer"
+
+location_preferences:
+  primary:
+    - Sheffield
+    - London
+    - Manchester
+    - Leeds
+    - Bristol
+  acceptable:
+    - "Remote (UK)"
+    - "Hybrid (UK)"
+    - "United Kingdom"
+  not_acceptable:
+    - "Outside UK"
+
+salary_expectation_gbp_min: 40000
+salary_expectation_gbp_target: 55000
+salary_expectation_gbp_max: 75000
+
+experience_level: "Mid-level"
+years_of_experience: 3.0
