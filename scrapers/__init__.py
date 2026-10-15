@@ -5,6 +5,8 @@ Exports:
     ReedScraper: Scraper for Reed.co.uk API.
     AdzunaScraper: Scraper for Adzuna API.
     CareersPageScraper: Scraper for employer careers pages.
+    WelcomeToJungleScraper: Scraper for Welcome to the Jungle job board.
+    HiringCafeScraper: Scraper for Hiring Cafe job board.
     ScraperOrchestrator: Orchestrates all scrapers and deduplicates results.
 """
 
@@ -12,6 +14,7 @@ import logging
 from typing import Optional
 
 from .careers_page import CareersPageScraper
+from .job_boards import HiringCafeScraper, WelcomeToJungleScraper
 from .public_jobs import AdzunaScraper, ReedScraper
 
 logger = logging.getLogger(__name__)
@@ -20,6 +23,8 @@ __all__ = [
     "ReedScraper",
     "AdzunaScraper",
     "CareersPageScraper",
+    "WelcomeToJungleScraper",
+    "HiringCafeScraper",
     "ScraperOrchestrator",
 ]
 
@@ -50,6 +55,8 @@ class ScraperOrchestrator:
         self.scrapers = {
             "reed": ReedScraper(config),
             "adzuna": AdzunaScraper(config),
+            "welcometothejungle": WelcomeToJungleScraper(config),
+            "hiringcafe": HiringCafeScraper(config),
             "careers": CareersPageScraper(careers_config),
         }
 
