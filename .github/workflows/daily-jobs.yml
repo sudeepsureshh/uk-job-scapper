@@ -97,11 +97,12 @@ jobs:
           # Download the Excel report from the Actions tab in your GitHub repository.
 
       - name: Export database snapshot as artifact
-        run: python -c "
+        if: always()
+        run: |
+          python - <<'PYEOF'
           from storage.database import JobDatabase
           db = JobDatabase()
           path = db.export_to_github_artifact('output')
-          print(f'Database exported to: {path}')
+          print('Database exported to: ' + str(path))
           db.close()
-        "
-        if: always()
+          PYEOF
