@@ -159,6 +159,11 @@ class JobScorer:
         total = sum(breakdown.values())
         total = min(100, max(0, total))
 
+        # Penalise jobs with no Java/Spring Boot content — these are off-stack
+        JAVA_TERMS = {"java", "spring boot", "spring", "jvm", "jakarta", "hibernate"}
+        if not any(term in full_text for term in JAVA_TERMS):
+            total = max(0, total - 20)
+
         explanation = self.generate_explanation(job, matched, missing, total)
 
         scored_job = dict(job)

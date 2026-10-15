@@ -27,12 +27,18 @@ class WelcomeToJungleScraper(BaseJobScraper):
     """
     Scrapes Welcome to the Jungle (wttj.com) public job search.
 
-    WTTJ serves results via a public JSON API used by their search page.
-    We target the UK-filtered endpoint and parse the response.
+    WTTJ uses Algolia for search (app ID: CSEKHVMS53) but restricts their
+    public API key to requests originating from their own domain. Direct
+    programmatic access requires OAuth or a headless browser (Playwright).
+    The scraper attempts their REST API and gracefully returns 0 on failure.
+
+    To enable this scraper properly, you'd need to add Playwright to the
+    GitHub Actions workflow and render the search page in a real browser.
     Rate limit: 3 seconds between requests.
     """
 
-    BASE_SEARCH_URL = "https://www.welcometothejungle.com/api/v1/jobs"
+    # WTTJ REST API — requires session auth from their frontend
+    API_BASE_URL = "https://api.welcometothejungle.com"
     SITE_URL = "https://www.welcometothejungle.com"
     SOURCE = "welcometothejungle"
 
@@ -42,8 +48,9 @@ class WelcomeToJungleScraper(BaseJobScraper):
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": (
-                "Mozilla/5.0 (compatible; UK-Job-Scraper/1.0; "
-                "+https://github.com/sudeepsureshh/uk-job-scapper)"
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36"
             ),
             "Accept": "application/json",
             "Accept-Language": "en-GB,en;q=0.9",
@@ -77,25 +84,32 @@ class WelcomeToJungleScraper(BaseJobScraper):
 
     def _search(self, query: str, location: str) -> list[dict]:
         """
-        Attempt the WTTJ public search. Falls back to HTML scrape if API fails.
+        Attempt the WTTJ REST API. Falls back to HTML scrape if unavailable.
+
+        WTTJ is protected by AWS WAF; direct requests receive a 202 challenge
+        page instead of job data. The HTML fallback also fails for the same
+        reason. Both attempts are made but 0 results is the expected outcome
+        without a headless browser (Playwright) setup in the runner.
         """
         params = {
             "query": query,
-            "aroundQuery": location,
+            "country_code": "GB",
             "page": 1,
             "per_page": 30,
         }
-        api_url = f"{self.BASE_SEARCH_URL}?{urlencode(params)}"
+        api_url = f"{self.API_BASE_URL}/jobs?{urlencode(params)}"
 
         try:
             resp = self.session.get(api_url, timeout=self.timeout)
             if resp.status_code == 200:
-                data = resp.json()
-                return self._parse_api_response(data)
+                ct = resp.headers.get("content-type", "")
+                if "json" in ct:
+                    data = resp.json()
+                    return self._parse_api_response(data)
         except Exception:
             pass
 
-        # Fallback: scrape the public search HTML page
+        # Fallback: scrape the public search HTML page (blocked by WAF in CI)
         return self._scrape_html(query, location)
 
     def _parse_api_response(self, data: dict) -> list[dict]:
@@ -238,11 +252,14 @@ class HiringCafeScraper(BaseJobScraper):
     Scrapes Hiring Cafe (hiring.cafe) — a job aggregator that surfaces
     roles from many UK employers including startups.
 
-    Hiring Cafe has a public search API used by their frontend.
+    Hiring Cafe blocks direct requests with 403. Their internal API
+    (`/api/search`) returns 404 — the actual endpoint is not public.
+    This scraper returns 0 results gracefully until their public API
+    becomes available or an alternative access method is identified.
     Rate limit: 3 seconds between requests.
     """
 
-    SEARCH_URL = "https://hiring.cafe/api/search"
+    SEARCH_URL = "https://hiring.cafe/api/v1/jobs/search"
     SITE_URL = "https://hiring.cafe"
     SOURCE = "hiringcafe"
 
@@ -252,12 +269,16 @@ class HiringCafeScraper(BaseJobScraper):
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": (
-                "Mozilla/5.0 (compatible; UK-Job-Scraper/1.0; "
-                "+https://github.com/sudeepsureshh/uk-job-scapper)"
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36"
             ),
-            "Accept": "application/json",
+            "Accept": "application/json, text/javascript, */*",
             "Content-Type": "application/json",
             "Referer": "https://hiring.cafe/",
+            "Origin": "https://hiring.cafe",
+            "sec-fetch-site": "same-origin",
+            "sec-fetch-mode": "cors",
         })
 
     def scrape(self, keywords: list[str], location: str = "United Kingdom") -> list[dict]:

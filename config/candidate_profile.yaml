@@ -192,16 +192,16 @@ primary_job_targets:
   - "Backend Software Engineer"
 
 secondary_job_targets:
-  - "Software Engineer"
   - "Full Stack Java Developer"
-  - "API Developer"
-  - "Cloud Engineer"
-  - "DevOps Engineer"
-  - "Python Developer"
-  - "Graduate Software Engineer"
-  - "Associate Software Engineer"
+  - "Java Spring Boot Engineer"
+  - "Java Microservices Developer"
   - "FinTech Developer"
   - "Payments Developer"
+  - "Graduate Software Engineer"
+  - "Associate Software Engineer"
+  - "Python Developer"
+  - "Software Engineer"
+  - "API Developer"
   - "Data Engineer"
 
 location_preferences:
