@@ -1,107 +1,117 @@
 candidate:
   name: "Sudeep S"
   contact:
-    email: "sudeep.s@example.com"  # Replace with actual email
-    phone: "+44 XXXX XXXXXX"       # Replace with actual phone
-    linkedin: "linkedin.com/in/sudeep-s"  # Replace with actual
-    github: "github.com/sudeep-s"         # Replace with actual
-    location: "Sheffield, UK"
+    email: "sudeepsureshh@gmail.com"
+    linkedin: "linkedin.com/in/sudeep-s"
+    location: "United Kingdom"
 
   visa_status:
     requires_sponsorship: true
     visa_type: "Skilled Worker Visa"
     current_status: "Student Visa (Tier 4)"
     eligible_for_graduate_route: true
-    notes: "Currently on UK Student Visa for MSc at University of Sheffield. Will require Skilled Worker visa sponsorship post-graduation."
+    notes: "MSc completed Sep 2026 (result pending). Will require Skilled Worker visa sponsorship."
 
   education:
     - institution: "University of Sheffield"
       degree: "MSc Advanced Computer Science"
       period: "Sep 2025 - Sep 2026"
+      status: "Completed Sep 2026, final result pending"
       predicted_grade: "Distinction"
-      relevant_modules:
-        - "Advanced Software Engineering"
-        - "Machine Learning"
-        - "Data Science"
-        - "Distributed Systems"
-        - "Cloud Computing"
+      focus: "Software Reengineering, Mobile Application Development"
 
     - institution: "Loyola ICAM College of Engineering and Technology"
       degree: "BEng Computer Science and Engineering"
-      period: "2018 - 2022"
-      grade: "First Class"
+      period: "Jul 2018 - Jul 2022"
+      grade: "First Class Honours"
       cgpa: "8.0/10"
 
   work_experience:
-    - company: "Centrico"
-      role: "Java Developer"
-      period: "Aug 2022 - Aug 2025"
-      years: 3.0
+    - company: "Centrico (Sella banking group)"
+      role: "Software Engineer"
+      period: "Feb 2023 - Aug 2025"
+      years: 2.5
       domain: "Banking / Payments / Financial Technology"
       technologies:
-        - Java
+        - Java 21
         - Spring Boot
+        - Spring WebFlux
         - Spring MVC
         - REST APIs
         - Microservices
+        - Apache Kafka
         - PostgreSQL
         - Oracle
+        - MongoDB
         - Docker
-        - Kubernetes
         - Jenkins
-        - CI/CD
+        - GitLab CI
+        - Angular
         - Maven
         - Git
-        - Bitbucket
+        - JUnit
+        - Mockito
+        - JaCoCo
       key_responsibilities:
-        - "Designed and developed RESTful microservices for banking and POS systems"
-        - "Implemented Spring Boot applications for payment processing pipelines"
-        - "Integrated with third-party banking APIs and payment gateways"
-        - "Optimised SQL queries and database performance in PostgreSQL and Oracle"
-        - "Deployed containerised applications using Docker and Kubernetes"
-        - "Built and maintained CI/CD pipelines using Jenkins"
-        - "Performed code reviews and maintained high code quality standards"
-        - "Collaborated in Agile/Scrum teams"
+        - "Re-architected Configurator (used by 30+ internal teams) from Java 7/Oracle to reactive Java 21/Spring WebFlux/MongoDB — cut API response times ~67% and query latency ~30%"
+        - "Integrated Apache Kafka into POS system; built publisher and 3+ consumers used by 10+ downstream projects"
+        - "Restructured POS API in Spring Boot — throughput rose from ~100 to ~120 TPS"
+        - "Designed and maintained CI/CD pipelines in Jenkins, GitLab CI, Docker — pipeline runtime reduced ~40%"
+        - "Built Angular portal page for Configurator, replacing 3 legacy pages with one tabbed UI"
+        - "Owned Oracle-to-MongoDB migration for Configurator as sole engineer"
 
-    - company: "TakenMind Technologies"
-      role: "Java Developer Intern"
-      period: "Jun 2021 - Sep 2021"
-      years: 0.25
-      domain: "Software Development"
+    - company: "Centrico (Sella banking group)"
+      role: "Graduate Trainee"
+      period: "Aug 2022 - Feb 2023"
+      years: 0.5
+      domain: "Banking / Software Development"
       technologies:
         - Java
-        - REST APIs
         - Spring
+        - SQL
+        - JUnit
+        - Mockito
+        - JaCoCo
       key_responsibilities:
-        - "Developed REST API endpoints using Java and Spring framework"
-        - "Participated in backend development of web applications"
+        - "Completed graduate engineering programme in Java, Spring and banking platform architecture"
+        - "Wrote unit and integration tests with JUnit/Mockito; raised JaCoCo coverage from ~20% to ~55%"
+        - "Wrote 10+ SQL stored procedures for a daily transaction backup system (500 customers)"
 
   skills:
     languages:
       primary:
         - Java
+        - Java 21
+        - SQL
         - Python
       secondary:
-        - "C#"
         - JavaScript
         - Kotlin
-        - "C++"
-        - SQL
+        - "Shell Scripting"
 
     frameworks:
       backend:
         - "Spring Boot"
+        - "Spring WebFlux"
         - "Spring MVC"
         - "Spring Framework"
         - Microservices
         - "REST APIs"
         - "RESTful Web Services"
+        - Hibernate
+        - "Apache Tomcat"
+        - Swagger
+        - OpenAPI
       frontend:
-        - React
         - Angular
+        - React
       mobile:
         - "Jetpack Compose"
         - Android
+
+    messaging:
+      - "Apache Kafka"
+      - Kafka
 
     databases:
       - PostgreSQL
@@ -111,12 +121,12 @@ candidate:
 
     devops_cloud:
       - Docker
-      - Kubernetes
       - Jenkins
+      - "GitLab CI"
+      - "CI/CD"
       - AWS
       - Azure
-      - "CI/CD"
-      - "Shell Scripting"
+      - Linux
       - Git
       - Bitbucket
       - Maven
@@ -124,6 +134,7 @@ candidate:
     testing:
       - JUnit
       - Mockito
+      - JaCoCo
       - "Unit Testing"
       - "Integration Testing"
       - TDD
@@ -132,8 +143,8 @@ candidate:
       - Maven
       - Git
       - Docker
+      - Jira
       - Bitbucket
-      - "Shell Scripting"
       - IntelliJ IDEA
       - VS Code
 
@@ -142,54 +153,91 @@ candidate:
       - "Code Review"
       - "System Design"
       - "API Design"
-      - "Problem Solving"
+      - "Event-driven Design"
+      - "Database Migration"
+      - "API Documentation (Swagger)"
 
   certifications:
     - name: "Microsoft Azure Fundamentals (AZ-900)"
       issuer: "Microsoft"
+      year: 2024
       type: "Cloud"
-    - name: "Google Cloud Fundamentals"
+    - name: "AWS Technical Essentials"
+      issuer: "Amazon Web Services"
+      year: 2021
+      type: "Cloud"
+    - name: "Google Cloud Architecture Path"
       issuer: "Google"
+      year: 2021
       type: "Cloud"
 
   projects:
-    - name: "eWaste Hub"
-      description: "Full-stack e-waste management platform with payment integration"
+    - name: "Outbox"
+      description: "Java 21 and Spring Boot job-application tracker deployed on Railway"
       technologies:
+        - "Java 21"
         - "Spring Boot"
+        - PostgreSQL
+      type: "personal"
+      period: "Jul 2026 - Aug 2026"
+
+    - name: "eWaste Hub"
+      description: "JWT-secured full-stack B2C waste management platform with Stripe and PayPal payment integration (awarded 75%, distinction)"
+      technologies:
+        - "Spring Boot 3.2"
+        - "Java 17"
         - PostgreSQL
         - React
         - Stripe
+        - PayPal
       type: "academic"
+      period: "Mar 2026 - May 2026"
 
-    - name: "RecoLA"
-      description: "Android recommendation app built with Kotlin"
+    - name: "MSc Dissertation — Tracking Individuals Across Scenes in Video"
+      description: "Automatic person re-identification pipeline across film cuts using deep learning"
+      technologies:
+        - Python
+        - PyTorch
+        - OpenCV
+        - "YOLOv8"
+        - "ByteTrack"
+        - OSNet
+      type: "academic"
+      period: "Feb 2026 - Sep 2026"
+
+    - name: "RecoLA Utility Manager"
+      description: "Offline-first Android property management app with geolocation sorting"
       technologies:
         - Kotlin
         - "Jetpack Compose"
         - Android
       type: "academic"
+      period: "Sep 2025 - Dec 2025"
+
+  awards:
+    - "Centrico 2025 'I am Agile' award for independent delivery"
 
   measurable_achievements:
-    - "3+ years professional Java/Spring Boot experience at Centrico in banking/payments domain"
-    - "Led microservices development for POS and banking systems"
-    - "Developed REST APIs consumed by multiple downstream banking systems"
-    - "Deployed containerised microservices to Kubernetes clusters"
-    - "Predicted Distinction in MSc Advanced Computer Science at University of Sheffield"
-    - "First Class Honours in BEng Computer Science (CGPA 8.0/10)"
-    - "Dual cloud certifications: Azure AZ-900 and Google Cloud"
+    - "Re-architected configuration service used by 30+ internal teams — API response time -67%, query latency -30%"
+    - "Kafka integration into POS system used by 10+ downstream projects"
+    - "POS API throughput improved from ~100 to ~120 TPS"
+    - "CI/CD pipeline runtime reduced ~40% via Jenkins, GitLab CI and Docker"
+    - "Raised JaCoCo test coverage from ~20% to ~55%"
+    - "3+ years Java/Spring Boot in banking and payments (Centrico, Sella banking group)"
+    - "MSc Advanced Computer Science — predicted Distinction, University of Sheffield"
+    - "First Class Honours BEng Computer Science"
+    - "Dual cloud certifications: Azure AZ-900 and AWS Technical Essentials"
 
 primary_job_targets:
   - "Java Developer"
   - "Java Software Engineer"
   - "Backend Java Developer"
   - "Spring Boot Developer"
-  - "Backend Engineer"
+  - "Java Backend Engineer"
   - "Senior Java Developer"
   - "Software Engineer Java"
-  - "Java Backend Engineer"
-  - "Microservices Developer"
   - "Backend Software Engineer"
+  - "Java Engineer"
 
 secondary_job_targets:
   - "Full Stack Java Developer"
