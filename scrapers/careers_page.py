@@ -255,8 +255,9 @@ class CareersPageScraper(BaseJobScraper):
                     for j in jobs_raw
                     if j.get("title")
                 ]
+                jobs = [j for j in jobs if _is_uk_location(j.get("location", ""))]
                 logger.info(
-                    "CareersPage/Greenhouse: %d jobs at %s (slug=%s)",
+                    "CareersPage/Greenhouse: %d UK jobs at %s (slug=%s)",
                     len(jobs), name, slug,
                 )
                 return self._filter_by_keywords(jobs, skill_words)
@@ -281,7 +282,8 @@ class CareersPageScraper(BaseJobScraper):
                 jobs_raw = resp.json()
                 if isinstance(jobs_raw, list) and jobs_raw:
                     jobs = [self._lever_to_job(j, name) for j in jobs_raw if j.get("text")]
-                    logger.info("CareersPage/Lever: %d jobs at %s", len(jobs), name)
+                    jobs = [j for j in jobs if _is_uk_location(j.get("location", ""))]
+                    logger.info("CareersPage/Lever: %d UK jobs at %s", len(jobs), name)
                     return self._filter_by_keywords(jobs, skill_words)
         except Exception as exc:
             logger.debug("Lever API failed for %s: %s", name, exc)
@@ -600,6 +602,56 @@ _FILTER_STOP = {
     "the", "for", "with", "in", "at", "of", "to", "a", "an", "local",
     "public", "sector", "authority",
 }
+
+
+_UK_TERMS = {
+    "united kingdom", "uk", "u.k.", "great britain", "gb",
+    "england", "scotland", "wales",
+    "london", "manchester", "sheffield", "leeds", "birmingham",
+    "bristol", "edinburgh", "glasgow", "liverpool", "newcastle",
+    "cambridge", "oxford", "brighton", "bath", "york", "nottingham",
+    "leicester", "coventry", "southampton", "reading", "guildford",
+    "exeter", "norwich", "derby", "sunderland", "hull", "aberdeen",
+    "dundee", "cardiff", "belfast", "milton keynes", "portsmouth",
+    "plymouth", "swansea", "stoke", "wolverhampton", "warwick",
+    "sheffield", "salford", "wakefield", "huddersfield", "bradford",
+}
+
+_NON_UK_TERMS = {
+    "hong kong", "singapore", "australia", "canada", "usa",
+    "united states", "germany", "france", "spain", "italy",
+    "netherlands", "sweden", "denmark", "norway", "finland",
+    "switzerland", "austria", "belgium", "poland", "portugal",
+    "india", "japan", "china", "brazil", "mexico", "new zealand",
+    "south africa", "dubai", "uae", "amsterdam", "berlin", "paris",
+    "madrid", "rome", "milan", "stockholm", "copenhagen", "oslo",
+    "zurich", "vienna", "brussels", "warsaw", "lisbon", "toronto",
+    "vancouver", "sydney", "melbourne", "new york", "san francisco",
+    "bangalore", "bengaluru", "mumbai", "hyderabad", "chennai",
+    "pune", "delhi", "gurugram", "gurgaon",
+    "tokyo", "shanghai", "beijing", "shenzhen", "seoul",
+    "kuala lumpur", "jakarta", "manila",
+    "dublin", "ireland",  # Republic of Ireland (not UK)
+}
+
+
+def _is_uk_location(location: str) -> bool:
+    """Return True if the location is in the UK (or unspecified/remote)."""
+    if not location:
+        return True
+    loc = location.lower()
+    # Northern Ireland is UK — check before the generic "ireland" non-UK check
+    if "northern ireland" in loc:
+        return True
+    if any(term in loc for term in _NON_UK_TERMS):
+        return False
+    if any(term in loc for term in _UK_TERMS):
+        return True
+    # Remote/hybrid with no country clue → accept (employers are UK-based)
+    if "remote" in loc or "hybrid" in loc:
+        return True
+    # Unrecognised location → accept and let scorer handle relevance
+    return True
 
 
 def _extract_skill_words(keywords: list[str]) -> list[str]:
