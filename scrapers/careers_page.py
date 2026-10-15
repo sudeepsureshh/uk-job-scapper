@@ -156,6 +156,17 @@ class CareersPageScraper(BaseJobScraper):
         """
         name = employer.get("employer_name", "")
         url = employer.get("careers_url", "")
+        ats_type = employer.get("ats_type", "").lower()
+
+        # Strategy 0: ATS public APIs (no HTML scraping needed)
+        if ats_type == "greenhouse":
+            jobs = self._try_greenhouse_api(name, url, keywords)
+            if jobs:
+                return jobs
+        elif ats_type == "lever":
+            jobs = self._try_lever_api(name, url, keywords)
+            if jobs:
+                return jobs
 
         if not self._check_robots_txt(url):
             logger.info("robots.txt disallows %s, skipping.", url)
@@ -196,6 +207,139 @@ class CareersPageScraper(BaseJobScraper):
 
         logger.info("CareersPage: no jobs extracted from %s (%s)", name, url)
         return []
+
+    # ------------------------------------------------------------------
+    # ATS public API helpers
+    # ------------------------------------------------------------------
+
+    def _greenhouse_slug_candidates(self, name: str, url: str) -> list[str]:
+        """Derive likely Greenhouse board slugs from employer name and URL."""
+        from urllib.parse import urlparse as _urlparse
+        slugs = []
+        # From URL hostname: careers.revolut.com → revolut
+        parsed = _urlparse(url)
+        host = parsed.hostname or ""
+        host_clean = host.replace("www.", "").replace("careers.", "").replace("jobs.", "")
+        domain_slug = host_clean.split(".")[0]
+        if domain_slug:
+            slugs.append(domain_slug)
+        # From employer name: "Monzo Bank" → "monzo", "Funding Circle" → "fundingcircle"
+        import re as _re
+        name_slug = _re.sub(r"[^a-z0-9]", "", name.lower())
+        if name_slug and name_slug not in slugs:
+            slugs.append(name_slug)
+        # "Funding Circle" → "funding-circle"
+        name_hyphen = _re.sub(r"\s+", "-", name.lower().strip())
+        name_hyphen = _re.sub(r"[^a-z0-9-]", "", name_hyphen)
+        if name_hyphen and name_hyphen not in slugs:
+            slugs.append(name_hyphen)
+        return slugs
+
+    def _try_greenhouse_api(
+        self, name: str, url: str, keywords: list[str]
+    ) -> list[dict]:
+        """Query the Greenhouse public job board API."""
+        for slug in self._greenhouse_slug_candidates(name, url):
+            api_url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs?content=true"
+            try:
+                resp = _SESSION.get(api_url, timeout=self.timeout)
+                if resp.status_code != 200:
+                    continue
+                data = resp.json()
+                jobs_raw = data.get("jobs", [])
+                if not jobs_raw:
+                    continue
+                jobs = [
+                    self._greenhouse_to_job(j, name)
+                    for j in jobs_raw
+                    if j.get("title")
+                ]
+                logger.info(
+                    "CareersPage/Greenhouse: %d jobs at %s (slug=%s)",
+                    len(jobs), name, slug,
+                )
+                return self._filter_by_keywords(jobs, keywords)
+            except Exception as exc:
+                logger.debug("Greenhouse API failed for %s (slug=%s): %s", name, slug, exc)
+        return []
+
+    def _try_lever_api(
+        self, name: str, url: str, keywords: list[str]
+    ) -> list[dict]:
+        """Query the Lever public postings API."""
+        from urllib.parse import urlparse as _urlparse
+        import re as _re
+        parsed = _urlparse(url)
+        host = (parsed.hostname or "").replace("www.", "").replace("jobs.", "")
+        slug = host.split(".")[0]
+        api_url = f"https://api.lever.co/v0/postings/{slug}?mode=json&limit=250"
+        try:
+            resp = _SESSION.get(api_url, timeout=self.timeout)
+            if resp.status_code == 200:
+                jobs_raw = resp.json()
+                if isinstance(jobs_raw, list) and jobs_raw:
+                    jobs = [self._lever_to_job(j, name) for j in jobs_raw if j.get("text")]
+                    logger.info("CareersPage/Lever: %d jobs at %s", len(jobs), name)
+                    return self._filter_by_keywords(jobs, keywords)
+        except Exception as exc:
+            logger.debug("Lever API failed for %s: %s", name, exc)
+        return []
+
+    def _greenhouse_to_job(self, item: dict, employer: str) -> dict:
+        """Convert a Greenhouse API job item to the standard job schema."""
+        title = item.get("title", "")
+        job_url = item.get("absolute_url", "")
+        loc_name = (item.get("location") or {}).get("name") or "United Kingdom"
+        description = item.get("content") or f"{title} at {employer}"
+        # Strip HTML from description
+        try:
+            desc_soup = BeautifulSoup(description, "lxml")
+            description = desc_soup.get_text(" ", strip=True)[:2000]
+        except Exception:
+            pass
+        return self._make_result(
+            job_id=_make_job_id("greenhouse", employer, str(item.get("id", "")), job_url),
+            title=title,
+            employer=employer,
+            location=loc_name,
+            salary_min=None,
+            salary_max=None,
+            description=description,
+            url=job_url,
+            apply_url=job_url,
+            posted_date=item.get("first_published") or item.get("updated_at") or "",
+            closing_date="",
+            source="greenhouse",
+        )
+
+    def _lever_to_job(self, item: dict, employer: str) -> dict:
+        """Convert a Lever API posting to the standard job schema."""
+        title = item.get("text", "")
+        job_url = item.get("hostedUrl") or item.get("applyUrl") or ""
+        categories = item.get("categories") or {}
+        location = categories.get("location") or "United Kingdom"
+        description_raw = (item.get("description") or "") + " " + " ".join(
+            (l.get("content") or "") for l in (item.get("lists") or [])
+        )
+        try:
+            desc_soup = BeautifulSoup(description_raw, "lxml")
+            description = desc_soup.get_text(" ", strip=True)[:2000]
+        except Exception:
+            description = description_raw[:2000]
+        return self._make_result(
+            job_id=_make_job_id("lever", employer, item.get("id", ""), job_url),
+            title=title,
+            employer=employer,
+            location=location,
+            salary_min=None,
+            salary_max=None,
+            description=description,
+            url=job_url,
+            apply_url=job_url,
+            posted_date="",
+            closing_date="",
+            source="lever",
+        )
 
     # ------------------------------------------------------------------
     # Extraction strategies
