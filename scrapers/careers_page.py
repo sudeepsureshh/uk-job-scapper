@@ -239,6 +239,7 @@ class CareersPageScraper(BaseJobScraper):
         self, name: str, url: str, keywords: list[str]
     ) -> list[dict]:
         """Query the Greenhouse public job board API."""
+        skill_words = _extract_skill_words(keywords)
         for slug in self._greenhouse_slug_candidates(name, url):
             api_url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs?content=true"
             try:
@@ -258,7 +259,7 @@ class CareersPageScraper(BaseJobScraper):
                     "CareersPage/Greenhouse: %d jobs at %s (slug=%s)",
                     len(jobs), name, slug,
                 )
-                return self._filter_by_keywords(jobs, keywords)
+                return self._filter_by_keywords(jobs, skill_words)
             except Exception as exc:
                 logger.debug("Greenhouse API failed for %s (slug=%s): %s", name, slug, exc)
         return []
@@ -269,6 +270,7 @@ class CareersPageScraper(BaseJobScraper):
         """Query the Lever public postings API."""
         from urllib.parse import urlparse as _urlparse
         import re as _re
+        skill_words = _extract_skill_words(keywords)
         parsed = _urlparse(url)
         host = (parsed.hostname or "").replace("www.", "").replace("jobs.", "")
         slug = host.split(".")[0]
@@ -280,7 +282,7 @@ class CareersPageScraper(BaseJobScraper):
                 if isinstance(jobs_raw, list) and jobs_raw:
                     jobs = [self._lever_to_job(j, name) for j in jobs_raw if j.get("text")]
                     logger.info("CareersPage/Lever: %d jobs at %s", len(jobs), name)
-                    return self._filter_by_keywords(jobs, keywords)
+                    return self._filter_by_keywords(jobs, skill_words)
         except Exception as exc:
             logger.debug("Lever API failed for %s: %s", name, exc)
         return []
@@ -589,3 +591,36 @@ def _safe_float(value: Any) -> float | None:
         return float(value)
     except (ValueError, TypeError):
         return None
+
+
+# Stop words that carry no technical signal when isolated
+_FILTER_STOP = {
+    "developer", "engineer", "senior", "junior", "graduate", "associate",
+    "lead", "staff", "full", "stack", "back", "front", "end", "and", "or",
+    "the", "for", "with", "in", "at", "of", "to", "a", "an", "local",
+    "public", "sector", "authority",
+}
+
+
+def _extract_skill_words(keywords: list[str]) -> list[str]:
+    """
+    Extract individual technical skill words from multi-word keyword phrases.
+
+    "Java Developer" → ["java"]
+    "Spring Boot Developer" → ["spring", "boot"]
+    "FinTech Developer" → ["fintech"]
+
+    Used so Greenhouse/Lever job descriptions are matched on skill tokens
+    rather than requiring the exact job-title phrase.
+    """
+    import re as _re
+    words = set()
+    for kw in keywords:
+        parts = _re.split(r"\s+", kw.lower().strip())
+        for part in parts:
+            clean = _re.sub(r"[^a-z0-9]", "", part)
+            if clean and clean not in _FILTER_STOP and len(clean) > 3:
+                words.add(clean)
+    # Always include core Java/Spring terms even if not in keywords
+    words.update({"java", "spring", "kafka", "springboot", "fintech", "payments"})
+    return sorted(words)
